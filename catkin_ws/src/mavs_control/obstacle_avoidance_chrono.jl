@@ -93,9 +93,8 @@ function callback(msg::veh_status)
     X0[8] = msg.x_a
     #println(string(X0," X0\n"))
     idx=2;
-    #updateX0!(n,X0;(:userUpdate=>true))
+#    updateX0!(n,X0;(:userUpdate=>true))
 end
-global X0 = zeros(8)
 
 function main()
   init_node("rosjl_obstacles")
@@ -163,6 +162,7 @@ function main()
   ss_r = set_state(ss)
 
  global  n=initializeAutonomousControl(c);
+ global X0 = n.mpc.X0[1]
 
   driveStraight!(n)
 
@@ -198,12 +198,11 @@ function main()
     #veh_info = Subscriber{veh_status}("vehicleinfo", callback,(n,),queue_size = 2)
     veh_info = Subscriber{veh_status}("vehicleinfo", callback,queue_size = 2)
 
-    if idx==2
-        updateX0!(n,X0;(:userUpdate=>true))
-    else
-        updateX0!(n,X0_prev;(:userUpdate=>true))
-    end
+#    if idx==1
+    updateX0!(n,X0;(:userUpdate=>true))
+    #end
     println(string(n.mpc.X0[ctr]," X0\n"))
+    println(string(n.mpc.X0[ctr]," MPC X0\n"))
     status=autonomousControl!(n)                # rerun optimization
 
   #  n.mpc.t0_actual=(n.r.eval_num-1)*n.mpc.tex  # external so that it can be updated easily in PathFollowing
