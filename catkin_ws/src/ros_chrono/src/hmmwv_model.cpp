@@ -84,7 +84,7 @@ std::string steering_controller_file(data_path+"generic/driver/SteeringControlle
 //std::string steering_controller_file("generic/driver/SteeringController.json");
 std::string speed_controller_file(data_path+"generic/driver/SpeedController.json");
 //std::string speed_controller_file("generic/driver/SpeedController.json");
-// std::string path_file("paths/straight.txt");
+//std::string path_file("paths/straight.txt");
 std::string path_file(data_path+"paths/my_path.txt");
 
 // std::string path_file("paths/curve.txt");
@@ -598,7 +598,7 @@ int main(int argc, char* argv[]) {
         double q2 = global_orntn[2];
         double q3 = global_orntn[3];
         double yaw_val=atan2(2*(q0*q3+q1*q2),1-2*(q2*q2+q3*q3));
-
+/*
         if (yaw_val<0){
           yaw_val=-yaw_val+PI/2;
         }
@@ -607,7 +607,7 @@ int main(int argc, char* argv[]) {
         }
         else if (yaw_val>PI/2 && yaw_val<=PI){
           yaw_val=5*PI/2-yaw_val;
-        }
+        } */
         //ChPacejkaTire<> slip_angle = GetSlipAngle()
         double slip_angle = my_hmmwv.GetTire(0)->GetLongitudinalSlip();
 
@@ -615,7 +615,7 @@ int main(int argc, char* argv[]) {
         data_out.t_chrono=time; //time in chrono simulation
         data_out.x_pos= global_pos[0] ;
         data_out.y_pos=global_pos[1];
-        data_out.x_v= global_velCOM[0]; //speed measured at the origin of the chassis reference frame.
+        data_out.x_v= fabs(global_velCOM[0]); //speed measured at the origin of the chassis reference frame.
         data_out.y_v= global_velCOM[1];
         data_out.x_a= global_accCOM[0];
         data_out.yaw_curr=yaw_val; //in radians
